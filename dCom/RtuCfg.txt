@@ -3,8 +3,8 @@ TCP 51273
 
 DBC 3
 
-DO_REG  1  1600  0  0  1  0  DO  @STOP      2
-DO_REG  1  1602  0  0  1  0  DO  @VentilV1  2
-DO_REG  2  1605  0  0  1  0  DO  @P         2
-IN_REG  1  1500  0  0  65535  0  AI  @L     3
-HR_INT  1  1400  0  0  65535  0  AO  @N1    3
+DO_REG  1  1600  0  0  1  0  DO  @STOP      2  1  0
+DO_REG  1  1602  0  0  1  0  DO  @VentilV1  2  1  0
+DO_REG  2  1605  0  0  1  0  DO  @P         2  1  0
+IN_REG  1  1500  0  0  65535  0  AI  @L     3  1  0
+HR_INT  1  1400  0  0  65535  0  AO  @N1    3  1  0
