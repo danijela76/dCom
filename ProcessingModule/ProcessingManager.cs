@@ -38,7 +38,7 @@ namespace ProcessingModule
             IModbusFunction fn = FunctionFactory.CreateModbusFunction(p);
             this.functionExecutor.EnqueueCommand(fn);
         }
-        
+
         /// <inheritdoc />
         public void ExecuteWriteCommand(IConfigItem configItem, ushort transactionId, byte remoteUnitAddress, ushort pointAddress, int value)
         {
@@ -109,7 +109,7 @@ namespace ProcessingModule
         private void CommandExecutor_UpdatePointEvent(PointType type, ushort pointAddress, ushort newValue)
         {
             List<IPoint> points = storage.GetPoints(new List<PointIdentifier>(1) { new PointIdentifier(type, pointAddress) });
-            
+
             if (type == PointType.ANALOG_INPUT || type == PointType.ANALOG_OUTPUT)
             {
                 ProcessAnalogPoint(points.First() as IAnalogPoint, newValue);
@@ -130,7 +130,7 @@ namespace ProcessingModule
             point.RawValue = newValue;
             point.Timestamp = DateTime.Now;
             point.State = (DState)newValue;
-
+            point.Alarm = alarmProcessor.GetAlarmForDigitalPoint(newValue, point.ConfigItem);
         }
 
         /// <summary>
@@ -142,6 +142,8 @@ namespace ProcessingModule
         {
             point.RawValue = newValue;
             point.Timestamp = DateTime.Now;
+            point.EguValue = eguConverter.ConvertToEGU(point.ConfigItem.ScaleFactor, point.ConfigItem.Deviation, newValue);
+            point.Alarm = alarmProcessor.GetAlarmForAnalogPoint(point.EguValue, point.ConfigItem);
         }
 
         /// <inheritdoc />
